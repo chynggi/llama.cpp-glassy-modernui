@@ -18,6 +18,7 @@
 	import { conversationsStore } from '$lib/stores/conversations.svelte';
 	import { TruncatedText } from '$lib/components/app';
 	import { onMount } from 'svelte';
+	import { fade } from 'svelte/transition';
 
 	interface Props {
 		isActive?: boolean;
@@ -105,7 +106,7 @@
 
 <!-- svelte-ignore a11y_mouse_events_have_key_events -->
 <button
-	class="group flex min-h-9 w-full cursor-pointer items-center justify-between space-x-3 rounded-lg py-1.5 text-left transition-colors hover:bg-foreground/10 {isActive
+	class="group flex min-h-11 md:min-h-9 w-full cursor-pointer items-center justify-between space-x-3 rounded-lg py-1.5 text-left transition-colors hover:bg-foreground/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:ring-offset-1 focus-visible:ring-offset-background {isActive
 		? 'bg-foreground/5 text-accent-foreground'
 		: ''} px-3"
 	onclick={handleSelect}
@@ -169,8 +170,8 @@
 		<TruncatedText text={conversation.name} class="text-sm font-medium" showTooltip={false} />
 	</div>
 
-	{#if renderActionsDropdown}
-		<div class="actions flex items-center">
+	{#if renderActionsDropdown || dropdownOpen}
+		<div transition:fade={{ duration: 150 }} class="actions flex items-center">
 			<DropdownMenuActions
 				triggerIcon={MoreHorizontal}
 				triggerTooltip="More actions"
@@ -217,6 +218,7 @@
 	button {
 		:global([data-slot='dropdown-menu-trigger']:not([data-state='open'])) {
 			opacity: 0;
+			transition: opacity 0.15s ease-in-out;
 		}
 
 		&:is(:hover) :global([data-slot='dropdown-menu-trigger']),

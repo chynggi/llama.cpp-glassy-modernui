@@ -9,7 +9,7 @@
 		ChatScreenServerError
 	} from '$lib/components/app';
 	import { Button } from '$lib/components/ui/button';
-	import { Maximize2, Minimize2 } from '@lucide/svelte';
+	import { Expand, Maximize2, Minimize2 } from '@lucide/svelte';
 	import { createAutoScrollController } from '$lib/hooks/use-auto-scroll.svelte';
 	import { useChatScreenActiveModel } from '$lib/hooks/use-chat-screen-active-model.svelte';
 	import { useChatScreenDragAndDrop } from '$lib/hooks/use-chat-screen-drag-and-drop.svelte';
@@ -57,7 +57,7 @@
 	let isServerLoading = $derived(serverLoading());
 	let hasPropsError = $derived(!!serverError());
 	let isCurrentConversationLoading = $derived(isLoading() || isChatStreaming());
-	let isWideChatMode = $derived(Boolean(config()[SETTINGS_KEYS.WIDE_CHAT_MODE]));
+	let chatWidthStyle = $derived(String(config()[SETTINGS_KEYS.CHAT_WIDTH_STYLE] ?? 'normal'));
 	let chatFormBottomPosition = $derived.by(() => {
 		if (!isMobile.current) return '1rem';
 		if (device.isStandalone) return '1.5rem';
@@ -308,16 +308,23 @@
 					variant="ghost"
 					size="sm"
 					class="h-8 gap-1.5 px-2 text-xs text-muted-foreground hover:text-foreground"
-					onclick={() => settingsStore.updateConfig(SETTINGS_KEYS.WIDE_CHAT_MODE, !isWideChatMode)}
-					aria-label={isWideChatMode ? 'Collapse chat width' : 'Expand chat width'}
-					title={isWideChatMode ? 'Collapse chat width' : 'Expand chat width'}
+					onclick={() => {
+						const nextStyle = chatWidthStyle === 'normal' ? 'wide' : chatWidthStyle === 'wide' ? 'full' : 'normal';
+						settingsStore.updateConfig(SETTINGS_KEYS.CHAT_WIDTH_STYLE, nextStyle);
+					}}
+					aria-label={chatWidthStyle === 'normal' ? 'Expand chat to wide' : chatWidthStyle === 'wide' ? 'Expand chat to full' : 'Collapse chat'}
+					title={chatWidthStyle === 'normal' ? 'Expand chat to wide' : chatWidthStyle === 'wide' ? 'Expand chat to full' : 'Collapse chat'}
 				>
-					{#if isWideChatMode}
-						<Minimize2 class="h-3.5 w-3.5" />
-					{:else}
+					{#if chatWidthStyle === 'normal'}
 						<Maximize2 class="h-3.5 w-3.5" />
+						Wide chat
+					{:else if chatWidthStyle === 'wide'}
+						<Expand class="h-3.5 w-3.5" />
+						Full chat
+					{:else}
+						<Minimize2 class="h-3.5 w-3.5" />
+						Narrow chat
 					{/if}
-					{isWideChatMode ? 'Narrow chat' : 'Wide chat'}
 				</Button>
 			</div>
 		</div>

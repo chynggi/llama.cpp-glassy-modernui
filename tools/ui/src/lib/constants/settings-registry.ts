@@ -67,6 +67,23 @@ const ACCENT_COLOR_OPTIONS: Array<{ value: string; label: string }> = [
 	{ value: 'red', label: 'Red' }
 ];
 
+const THEME_STYLE_OPTIONS: Array<{ value: string; label: string }> = [
+	{ value: 'default', label: 'Default' },
+	{ value: 'tokyo-night', label: 'Tokyo Night' },
+	{ value: 'nord', label: 'Nord' },
+	{ value: 'dracula', label: 'Dracula' },
+	{ value: 'gruvbox', label: 'Gruvbox' },
+	{ value: 'synthwave', label: 'Synthwave \'84' },
+	{ value: 'soft', label: 'Soft (Gradio)' },
+	{ value: 'monochrome', label: 'Monochrome (Gradio)' }
+];
+
+const CHAT_WIDTH_STYLE_OPTIONS: Array<{ value: string; label: string }> = [
+	{ value: 'normal', label: 'Normal (Centered)' },
+	{ value: 'wide', label: 'Wide' },
+	{ value: 'full', label: 'Full Width (Fluid)' }
+];
+
 const SETTINGS_REGISTRY: Record<string, SettingsSectionEntry> = {
 	[SETTINGS_SECTION_SLUGS.GENERAL]: {
 		title: SETTINGS_SECTION_TITLES.GENERAL,
@@ -405,6 +422,24 @@ const SETTINGS_REGISTRY: Record<string, SettingsSectionEntry> = {
 				type: SettingsFieldType.SELECT,
 				section: SETTINGS_SECTION_SLUGS.DISPLAY,
 				options: ACCENT_COLOR_OPTIONS
+			},
+			{
+				key: SETTINGS_KEYS.THEME_STYLE,
+				label: 'Theme style variation',
+				help: 'Choose a specific theme style variation to customize color schemes and syntax highlighting.',
+				defaultValue: 'default',
+				type: SettingsFieldType.SELECT,
+				section: SETTINGS_SECTION_SLUGS.DISPLAY,
+				options: THEME_STYLE_OPTIONS
+			},
+			{
+				key: SETTINGS_KEYS.CHAT_WIDTH_STYLE,
+				label: 'Chat layout width',
+				help: 'Choose how wide the chat message list should expand. Full Width fills the entire window space except the sidebar.',
+				defaultValue: 'normal',
+				type: SettingsFieldType.SELECT,
+				section: SETTINGS_SECTION_SLUGS.DISPLAY,
+				options: CHAT_WIDTH_STYLE_OPTIONS
 			}
 		]
 	},

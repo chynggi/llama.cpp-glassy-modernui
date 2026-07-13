@@ -12,10 +12,10 @@ export interface AccentColorDefinition {
 
 export const ACCENT_COLORS: Record<string, AccentColorDefinition> = {
 	default: {
-		light: 'oklch(0.95 0 0)',
-		dark: 'oklch(0.269 0 0)',
-		glowLight: 'oklch(0.6 0 0)',
-		glowDark: 'oklch(0.922 0 0)'
+		light: 'oklch(0.93 0.04 220)',
+		dark: 'oklch(0.4 0.2 220)',
+		glowLight: 'oklch(0.6 0.22 220)',
+		glowDark: 'oklch(0.85 0.22 220)'
 	},
 	blue: {
 		light: 'oklch(0.93 0.04 250)',

@@ -411,6 +411,9 @@
 		:global(html.wide-chat-mode) .agentic-content {
 			max-width: 64rem;
 		}
+		:global(html.full-chat-mode) .agentic-content {
+			max-width: 100%;
+		}
 	}
 
 	.agentic-content > :global(*),

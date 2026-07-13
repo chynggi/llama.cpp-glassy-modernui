@@ -35,6 +35,8 @@ export const SETTINGS_KEYS = {
 	RENDER_THINKING_AS_MARKDOWN: 'renderThinkingAsMarkdown',
 	WIDE_CHAT_MODE: 'wideChatMode',
 	ACCENT_COLOR: 'accentColor',
+	THEME_STYLE: 'themeStyle',
+	CHAT_WIDTH_STYLE: 'chatWidthStyle',
 	// Sampling
 	TEMPERATURE: 'temperature',
 	DYNATEMP_RANGE: 'dynatemp_range',

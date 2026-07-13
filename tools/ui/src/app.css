@@ -3,6 +3,7 @@
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
 @import 'tw-animate-css';
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
 @custom-variant dark (&:is(.dark *));
 
@@ -41,17 +42,19 @@
 	--sidebar-ring: oklch(0.708 0 0);
 	--code-background: oklch(0.985 0 0);
 	--code-foreground: oklch(0.145 0 0);
+	--font-sans: 'DM Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+	--font-display: 'Space Grotesk', var(--font-sans);
 	--font-mono:
 		ui-monospace, SFMono-Regular, 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas,
 		'Liberation Mono', Menlo, monospace;
 	--layer-popover: 1000000;
 
 	/* Accent colors are applied dynamically via ThemeEffects.svelte */
-	--accent-light: oklch(0.95 0 0);
-	--accent-dark: oklch(0.269 0 0);
+	--accent-light: oklch(0.93 0.04 220);
+	--accent-dark: oklch(0.4 0.2 220);
 	--accent: var(--accent-light);
-	--glow-color-light: oklch(0.6 0 0);
-	--glow-color-dark: oklch(0.922 0 0);
+	--glow-color-light: oklch(0.6 0.22 220);
+	--glow-color-dark: oklch(0.85 0.22 220);
 	--glow-color: var(--glow-color-light);
 
 	/* Glassy surfaces (slightly transparent, xl blur) */
@@ -112,7 +115,266 @@
 	--code-foreground: oklch(0.875 0 0);
 }
 
+/* --- Tokyo Night Theme --- */
+.theme-tokyo-night.dark {
+	--background: oklch(0.20 0.02 250); /* Deep indigo #1a1b26 */
+	--foreground: oklch(0.90 0.02 250); /* #a9b1d6 */
+	--card: oklch(0.23 0.02 250);       /* #24283b */
+	--card-foreground: oklch(0.90 0.02 250);
+	--popover: oklch(0.23 0.02 250);
+	--popover-foreground: oklch(0.90 0.02 250);
+	--primary: oklch(0.70 0.14 240);    /* Tokyo Cyan/Blue #7aa2f7 */
+	--primary-foreground: oklch(0.20 0.02 250);
+	--secondary: oklch(0.28 0.03 250);  /* #414868 */
+	--secondary-foreground: oklch(0.90 0.02 250);
+	--muted: oklch(0.24 0.03 250);      /* #32344a */
+	--muted-foreground: oklch(0.60 0.04 250); /* #565f89 */
+	--border: oklch(1 0 0 / 15%);
+	--input: oklch(1 0 0 / 15%);
+	--ring: oklch(0.70 0.14 240);
+	--sidebar: oklch(0.16 0.02 250);    /* Darker navy #16161e */
+	--sidebar-foreground: oklch(0.90 0.02 250);
+	--sidebar-border: oklch(1 0 0 / 10%);
+	--code-background: oklch(0.24 0.03 250);
+	--code-foreground: oklch(0.90 0.02 250);
+	--glass-bg-dark: oklch(0.20 0.02 250 / 70%);
+	--glass-border-dark: oklch(1 0 0 / 12%);
+	--glow-color-dark: oklch(0.70 0.14 240);
+}
+
+/* --- Nord Theme --- */
+.theme-nord.dark {
+	--background: oklch(0.25 0.02 245); /* Nord slate #2e3440 */
+	--foreground: oklch(0.94 0.01 245); /* Nord snow #eceff4 */
+	--card: oklch(0.29 0.02 245);       /* #3b4252 */
+	--card-foreground: oklch(0.94 0.01 245);
+	--popover: oklch(0.29 0.02 245);
+	--popover-foreground: oklch(0.94 0.01 245);
+	--primary: oklch(0.75 0.08 210);    /* Nord cyan #88c0d0 */
+	--primary-foreground: oklch(0.25 0.02 245);
+	--secondary: oklch(0.33 0.02 245);  /* #434c5e */
+	--secondary-foreground: oklch(0.94 0.01 245);
+	--muted: oklch(0.35 0.02 245);      /* #4c566a */
+	--muted-foreground: oklch(0.70 0.02 245);
+	--border: oklch(1 0 0 / 15%);
+	--input: oklch(1 0 0 / 15%);
+	--ring: oklch(0.75 0.08 210);
+	--sidebar: oklch(0.21 0.02 245);    /* #242933 */
+	--sidebar-foreground: oklch(0.94 0.01 245);
+	--sidebar-border: oklch(1 0 0 / 10%);
+	--code-background: oklch(0.29 0.02 245);
+	--code-foreground: oklch(0.94 0.01 245);
+	--glass-bg-dark: oklch(0.25 0.02 245 / 70%);
+	--glass-border-dark: oklch(1 0 0 / 12%);
+	--glow-color-dark: oklch(0.75 0.08 210);
+}
+.theme-nord:not(.dark) {
+	--background: oklch(0.97 0.01 245); /* #eceff4 */
+	--foreground: oklch(0.25 0.02 245); /* #2e3440 */
+	--card: oklch(0.93 0.01 245);       /* #e5e9f0 */
+	--card-foreground: oklch(0.25 0.02 245);
+	--popover: oklch(0.93 0.01 245);
+	--popover-foreground: oklch(0.25 0.02 245);
+	--primary: oklch(0.55 0.08 210);    /* Darker Nord cyan */
+	--primary-foreground: oklch(0.97 0.01 245);
+	--secondary: oklch(0.88 0.01 245);  /* #d8dee9 */
+	--secondary-foreground: oklch(0.25 0.02 245);
+	--muted: oklch(0.88 0.01 245);
+	--muted-foreground: oklch(0.40 0.02 245); /* #4c566a */
+	--border: oklch(0 0 0 / 15%);
+	--input: oklch(0 0 0 / 15%);
+	--ring: oklch(0.55 0.08 210);
+	--sidebar: oklch(0.90 0.01 245);    /* #e5e9f0 */
+	--sidebar-foreground: oklch(0.25 0.02 245);
+	--sidebar-border: oklch(0 0 0 / 10%);
+	--glass-bg: oklch(0.97 0.01 245 / 70%);
+	--glass-border: oklch(0 0 0 / 12%);
+	--glow-color-light: oklch(0.55 0.08 210);
+}
+
+/* --- Dracula Theme --- */
+.theme-dracula.dark {
+	--background: oklch(0.24 0.02 290); /* Dracula BG #282a36 */
+	--foreground: oklch(0.96 0.01 290); /* Dracula FG #f8f8f2 */
+	--card: oklch(0.28 0.03 290);       /* Selection #44475a */
+	--card-foreground: oklch(0.96 0.01 290);
+	--popover: oklch(0.28 0.03 290);
+	--popover-foreground: oklch(0.96 0.01 290);
+	--primary: oklch(0.75 0.16 320);    /* Dracula Pink #ff79c6 */
+	--primary-foreground: oklch(0.24 0.02 290);
+	--secondary: oklch(0.35 0.04 290);  /* Comment #6272a4 */
+	--secondary-foreground: oklch(0.96 0.01 290);
+	--muted: oklch(0.30 0.03 290);
+	--muted-foreground: oklch(0.75 0.04 290);
+	--border: oklch(1 0 0 / 15%);
+	--input: oklch(1 0 0 / 15%);
+	--ring: oklch(0.75 0.16 320);
+	--sidebar: oklch(0.20 0.02 290);    /* #1e1f29 */
+	--sidebar-foreground: oklch(0.96 0.01 290);
+	--sidebar-border: oklch(1 0 0 / 10%);
+	--code-background: oklch(0.28 0.03 290);
+	--code-foreground: oklch(0.96 0.01 290);
+	--glass-bg-dark: oklch(0.24 0.02 290 / 70%);
+	--glass-border-dark: oklch(1 0 0 / 12%);
+	--glow-color-dark: oklch(0.75 0.16 320);
+}
+
+/* --- Gruvbox Theme --- */
+.theme-gruvbox.dark {
+	--background: oklch(0.25 0.02 60);  /* Gruvbox dark0 #282828 */
+	--foreground: oklch(0.91 0.03 75);  /* Gruvbox fg0 #fbf1c7 */
+	--card: oklch(0.29 0.02 60);        /* #3c3836 */
+	--card-foreground: oklch(0.91 0.03 75);
+	--popover: oklch(0.29 0.02 60);
+	--popover-foreground: oklch(0.91 0.03 75);
+	--primary: oklch(0.72 0.12 75);     /* Gruvbox Yellow #fabd2f */
+	--primary-foreground: oklch(0.25 0.02 60);
+	--secondary: oklch(0.35 0.02 60);   /* #504945 */
+	--secondary-foreground: oklch(0.91 0.03 75);
+	--muted: oklch(0.38 0.02 60);       /* #665c54 */
+	--muted-foreground: oklch(0.75 0.03 75);
+	--border: oklch(1 0 0 / 15%);
+	--input: oklch(1 0 0 / 15%);
+	--ring: oklch(0.72 0.12 75);
+	--sidebar: oklch(0.21 0.02 60);     /* #1d2021 */
+	--sidebar-foreground: oklch(0.91 0.03 75);
+	--sidebar-border: oklch(1 0 0 / 10%);
+	--code-background: oklch(0.29 0.02 60);
+	--code-foreground: oklch(0.91 0.03 75);
+	--glass-bg-dark: oklch(0.25 0.02 60 / 70%);
+	--glass-border-dark: oklch(1 0 0 / 12%);
+	--glow-color-dark: oklch(0.72 0.12 75);
+}
+.theme-gruvbox:not(.dark) {
+	--background: oklch(0.95 0.03 75);  /* Gruvbox light0 #fbf1c7 */
+	--foreground: oklch(0.25 0.02 60);  /* #282828 */
+	--card: oklch(0.91 0.03 75);        /* #ebdbb2 */
+	--card-foreground: oklch(0.25 0.02 60);
+	--popover: oklch(0.91 0.03 75);
+	--popover-foreground: oklch(0.25 0.02 60);
+	--primary: oklch(0.55 0.12 75);     /* Gruvbox Yellow dark */
+	--primary-foreground: oklch(0.95 0.03 75);
+	--secondary: oklch(0.86 0.03 75);   /* #d5c4a1 */
+	--secondary-foreground: oklch(0.25 0.02 60);
+	--muted: oklch(0.86 0.03 75);
+	--muted-foreground: oklch(0.42 0.03 60);
+	--border: oklch(0 0 0 / 15%);
+	--input: oklch(0 0 0 / 15%);
+	--ring: oklch(0.55 0.12 75);
+	--sidebar: oklch(0.93 0.03 75);     /* #f9f5d7 */
+	--sidebar-foreground: oklch(0.25 0.02 60);
+	--sidebar-border: oklch(0 0 0 / 10%);
+	--glass-bg: oklch(0.95 0.03 75 / 70%);
+	--glass-border: oklch(0 0 0 / 12%);
+	--glow-color-light: oklch(0.55 0.12 75);
+}
+
+/* --- Synthwave '84 Theme --- */
+.theme-synthwave.dark {
+	--background: oklch(0.18 0.05 285); /* Deep purple #262335 */
+	--foreground: oklch(0.95 0.02 285); /* White */
+	--card: oklch(0.22 0.06 285);       /* #2b2b40 */
+	--card-foreground: oklch(0.95 0.02 285);
+	--popover: oklch(0.22 0.06 285);
+	--popover-foreground: oklch(0.95 0.02 285);
+	--primary: oklch(0.70 0.20 330);    /* Neon Pink #f92aad */
+	--primary-foreground: oklch(0.18 0.05 285);
+	--secondary: oklch(0.28 0.08 285);  /* #372963 */
+	--secondary-foreground: oklch(0.95 0.02 285);
+	--muted: oklch(0.22 0.06 285);
+	--muted-foreground: oklch(0.80 0.18 190); /* Neon Cyan #36f9f6 */
+	--border: oklch(0.70 0.20 330 / 30%); /* Glowing border */
+	--input: oklch(0.28 0.08 285 / 50%);
+	--ring: oklch(0.70 0.20 330);
+	--sidebar: oklch(0.14 0.05 285);    /* #1e1c2a */
+	--sidebar-foreground: oklch(0.95 0.02 285);
+	--sidebar-border: oklch(0.70 0.20 330 / 15%);
+	--code-background: oklch(0.22 0.06 285);
+	--code-foreground: oklch(0.95 0.02 285);
+	--glass-bg-dark: oklch(0.18 0.05 285 / 75%);
+	--glass-border-dark: oklch(0.70 0.20 330 / 20%);
+	--glow-color-dark: oklch(0.70 0.20 330);
+}
+
+/* --- Gradio Soft Theme --- */
+.theme-soft.dark {
+	--radius: 1.0rem;
+	--background: oklch(0.18 0.01 240); /* #1f2937 */
+	--foreground: oklch(0.94 0.01 240);
+	--card: oklch(0.22 0.01 240);       /* #374151 */
+	--card-foreground: oklch(0.94 0.01 240);
+	--primary: oklch(0.60 0.15 250);    /* Soft Blue #3b82f6 */
+	--primary-foreground: oklch(0.98 0 0);
+	--secondary: oklch(0.28 0.01 240);
+	--secondary-foreground: oklch(0.94 0.01 240);
+	--muted: oklch(0.25 0.01 240);
+	--muted-foreground: oklch(0.70 0.01 240);
+	--border: oklch(0.35 0.01 240);
+	--sidebar: oklch(0.15 0.01 240);    /* #111827 */
+	--glass-bg-dark: oklch(0.18 0.01 240 / 70%);
+	--glass-border-dark: oklch(0.35 0.01 240 / 20%);
+	--glow-color-dark: oklch(0.60 0.15 250);
+}
+.theme-soft:not(.dark) {
+	--radius: 1.0rem;
+	--background: oklch(0.97 0.01 240); /* #f3f4f6 */
+	--foreground: oklch(0.25 0.01 240); /* #1f2937 */
+	--card: oklch(1 0 0);
+	--card-foreground: oklch(0.25 0.01 240);
+	--primary: oklch(0.55 0.15 250);    /* Soft Blue */
+	--primary-foreground: oklch(1 0 0);
+	--secondary: oklch(0.93 0.01 240);
+	--secondary-foreground: oklch(0.25 0.01 240);
+	--muted: oklch(0.93 0.01 240);
+	--muted-foreground: oklch(0.50 0.01 240);
+	--border: oklch(0.85 0.01 240);
+	--sidebar: oklch(0.95 0.01 240);    /* #f9fafb */
+	--glass-bg: oklch(0.97 0.01 240 / 70%);
+	--glass-border: oklch(0.85 0.01 240 / 30%);
+	--glow-color-light: oklch(0.55 0.15 250);
+}
+
+/* --- Gradio Monochrome Theme --- */
+.theme-monochrome.dark {
+	--radius: 0rem;
+	--background: oklch(0.10 0 0);      /* Minimal Slate Black */
+	--foreground: oklch(0.98 0 0);
+	--card: oklch(0.15 0 0);
+	--card-foreground: oklch(0.98 0 0);
+	--primary: oklch(0.98 0 0);         /* Stark White primary button */
+	--primary-foreground: oklch(0.10 0 0);
+	--secondary: oklch(0.20 0 0);
+	--secondary-foreground: oklch(0.98 0 0);
+	--muted: oklch(0.18 0 0);
+	--muted-foreground: oklch(0.70 0 0);
+	--border: oklch(0.25 0 0);
+	--sidebar: oklch(0.08 0 0);
+	--glass-bg-dark: oklch(0.10 0 0 / 80%);
+	--glass-border-dark: oklch(0.25 0 0 / 30%);
+	--glow-color-dark: oklch(0.98 0 0);
+}
+.theme-monochrome:not(.dark) {
+	--radius: 0rem;
+	--background: oklch(1 0 0);         /* Pure White background */
+	--foreground: oklch(0 0 0);         /* Pure Black text */
+	--card: oklch(0.98 0 0);
+	--card-foreground: oklch(0 0 0);
+	--primary: oklch(0 0 0);            /* Pure Black primary button */
+	--primary-foreground: oklch(1 0 0);
+	--secondary: oklch(0.95 0 0);
+	--secondary-foreground: oklch(0 0 0);
+	--muted: oklch(0.95 0 0);
+	--muted-foreground: oklch(0.40 0 0);
+	--border: oklch(0.85 0 0);
+	--sidebar: oklch(0.98 0 0);
+	--glass-bg: oklch(1 0 0 / 80%);
+	--glass-border: oklch(0.85 0 0 / 30%);
+	--glow-color-light: oklch(0 0 0);
+}
+
 @theme inline {
+	--font-sans: var(--font-sans);
+	--font-display: var(--font-display);
 	--radius-sm: calc(var(--radius) - 4px);
 	--radius-md: calc(var(--radius) - 2px);
 	--radius-lg: var(--radius);
@@ -156,9 +418,13 @@
 	}
 
 	body {
-		@apply bg-background text-foreground;
+		@apply bg-background text-foreground font-sans;
 		scrollbar-width: thin;
 		scrollbar-gutter: stable;
+	}
+
+	h1, h2, h3, h4, h5, h6 {
+		@apply font-display tracking-tight;
 	}
 
 	/* Global scrollbar styling - visible only on hover */
@@ -214,10 +480,15 @@
 /* Chat column width: 3xl default, expands to 5xl at 2xl breakpoint when wide mode is on */
 .chat-width {
 	max-width: 48rem;
+	transition: max-width 0.25s ease-in-out;
 }
 
 html.wide-chat-mode .chat-width {
 	max-width: 64rem;
+}
+
+html.full-chat-mode .chat-width {
+	max-width: 100%;
 }
 
 /* Glassy surface primitives */

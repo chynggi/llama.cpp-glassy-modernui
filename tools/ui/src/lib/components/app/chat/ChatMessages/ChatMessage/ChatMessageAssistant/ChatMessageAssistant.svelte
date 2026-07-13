@@ -404,5 +404,8 @@
 		:global(html.wide-chat-mode) .raw-output {
 			max-width: 64rem;
 		}
+		:global(html.full-chat-mode) .raw-output {
+			max-width: 100%;
+		}
 	}
 </style>

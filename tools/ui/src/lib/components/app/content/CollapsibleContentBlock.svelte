@@ -46,6 +46,38 @@
 	let displayedPreview = $state('');
 	let displayedOverflow = $state(0);
 
+	// Elapsed thinking timer
+	let elapsedSeconds = $state(0);
+	let timerInterval: ReturnType<typeof setInterval> | undefined = $state();
+	let startTime = $state<number | null>(null);
+
+	$effect(() => {
+		if (isStreaming && title.startsWith('Reasoning')) {
+			if (!startTime) {
+				startTime = Date.now();
+				elapsedSeconds = 0;
+			}
+			if (!timerInterval) {
+				timerInterval = setInterval(() => {
+					if (startTime) {
+						elapsedSeconds = Math.round((Date.now() - startTime) / 100) / 10;
+					}
+				}, 100);
+			}
+		} else {
+			if (timerInterval) {
+				clearInterval(timerInterval);
+				timerInterval = undefined;
+			}
+		}
+
+		return () => {
+			if (timerInterval) {
+				clearInterval(timerInterval);
+			}
+		};
+	});
+
 	$effect(() => {
 		void previewKey.key;
 		const content = rawContent ?? preview ?? '';
@@ -78,7 +110,9 @@
 	}}
 	class="{className} my-0!"
 >
-	<Card class="gap-0 border-muted bg-muted/30 py-0">
+	<Card
+		class="gap-0 border-muted bg-muted/10 py-0 transition-all duration-300 backdrop-blur-md {open ? 'border-accent/40 bg-muted/20 shadow-[0_0_15px_-3px_var(--glow-color)] dark:shadow-[0_0_20px_-3px_var(--glow-color-dark)]' : ''}"
+	>
 		<Collapsible.Trigger class="flex w-full cursor-pointer items-start justify-between gap-2 p-3">
 			<div class="flex min-w-0 items-center gap-2">
 				<div class="flex items-center gap-2 text-muted-foreground">
@@ -90,6 +124,14 @@
 
 					{#if subtitle}
 						<span class="text-xs italic">{subtitle}</span>
+					{:else if title.startsWith('Reasoning') && elapsedSeconds > 0}
+						<span class="text-xs italic text-muted-foreground/80">
+							{#if isStreaming}
+								thinking... ({elapsedSeconds.toFixed(1)}s)
+							{:else}
+								thought for {elapsedSeconds.toFixed(1)}s
+							{/if}
+						</span>
 					{/if}
 				</div>
 
