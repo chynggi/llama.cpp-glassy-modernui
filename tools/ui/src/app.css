@@ -46,6 +46,21 @@
 		'Liberation Mono', Menlo, monospace;
 	--layer-popover: 1000000;
 
+	/* Accent colors are applied dynamically via ThemeEffects.svelte */
+	--accent-light: oklch(0.95 0 0);
+	--accent-dark: oklch(0.269 0 0);
+	--accent: var(--accent-light);
+	--glow-color-light: oklch(0.6 0 0);
+	--glow-color-dark: oklch(0.922 0 0);
+	--glow-color: var(--glow-color-light);
+
+	/* Glassy surfaces (slightly transparent, xl blur) */
+	--glass-bg: oklch(1 0 0 / 70%);
+	--glass-bg-dark: oklch(0.16 0 0 / 70%);
+	--glass-border: oklch(0.875 0 0 / 35%);
+	--glass-border-dark: oklch(1 0 0 / 12%);
+	--glass-blur: blur(24px) saturate(160%);
+
 	--chat-form-area-height: 8rem;
 	--chat-form-area-offset: 2rem;
 	--chat-form-padding-top: 6rem;
@@ -73,8 +88,9 @@
 	--secondary-foreground: oklch(0.985 0 0);
 	--muted: oklch(0.269 0 0);
 	--muted-foreground: oklch(0.708 0 0);
-	--accent: oklch(0.269 0 0);
+	--accent: var(--accent-dark);
 	--accent-foreground: oklch(0.985 0 0);
+	--glow-color: var(--glow-color-dark);
 	--destructive: oklch(0.704 0.191 22.216);
 	--border: oklch(1 0 0 / 30%);
 	--input: oklch(1 0 0 / 30%);
@@ -192,6 +208,82 @@
 		/* Hide scrollbar for IE, Edge and Firefox */
 		-ms-overflow-style: none;
 		scrollbar-width: none;
+	}
+}
+
+/* Chat column width: 3xl default, expands to 5xl at 2xl breakpoint when wide mode is on */
+.chat-width {
+	max-width: 48rem;
+}
+
+html.wide-chat-mode .chat-width {
+	max-width: 64rem;
+}
+
+/* Glassy surface primitives */
+.glass-backdrop {
+	background: var(--glass-bg);
+	backdrop-filter: var(--glass-blur);
+	-webkit-backdrop-filter: var(--glass-blur);
+	border-color: var(--glass-border);
+}
+
+.dark .glass-backdrop {
+	background: var(--glass-bg-dark);
+	border-color: var(--glass-border-dark);
+}
+
+.glass-focus-ring:focus-within {
+	box-shadow:
+		0 0 0 2px color-mix(in oklch, var(--glow-color) 25%, transparent),
+		0 0 24px color-mix(in oklch, var(--glow-color) 15%, transparent);
+}
+
+.dark .glass-focus-ring:focus-within {
+	box-shadow:
+		0 0 0 2px color-mix(in oklch, var(--glow-color-dark) 25%, transparent),
+		0 0 24px color-mix(in oklch, var(--glow-color-dark) 15%, transparent);
+}
+
+/* AI thinking/streaming glow pulse */
+.glass-glow-pulse {
+	animation: glow-pulse 2s ease-in-out infinite;
+}
+
+@keyframes glow-pulse {
+	0%,
+	100% {
+		box-shadow: 0 0 0 0 color-mix(in oklch, var(--glow-color) 0%, transparent);
+	}
+	50% {
+		box-shadow: 0 0 20px 2px color-mix(in oklch, var(--glow-color) 12%, transparent);
+	}
+}
+
+.dark .glass-glow-pulse {
+	animation: glow-pulse-dark 2s ease-in-out infinite;
+}
+
+@keyframes glow-pulse-dark {
+	0%,
+	100% {
+		box-shadow: 0 0 0 0 color-mix(in oklch, var(--glow-color-dark) 0%, transparent);
+	}
+	50% {
+		box-shadow: 0 0 20px 2px color-mix(in oklch, var(--glow-color-dark) 15%, transparent);
+	}
+}
+
+/* Respect system preference for reduced transparency */
+@media (prefers-reduced-transparency: reduce) {
+	.glass-backdrop,
+	.glass-focus-ring,
+	.glass-glow-pulse,
+	.dark .glass-glow-pulse {
+		backdrop-filter: none !important;
+		-webkit-backdrop-filter: none !important;
+		box-shadow: none !important;
+		animation: none !important;
 	}
 }
 

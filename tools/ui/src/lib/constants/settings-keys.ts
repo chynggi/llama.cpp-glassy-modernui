@@ -33,6 +33,8 @@ export const SETTINGS_KEYS = {
 	SHOW_BUILD_VERSION: 'showBuildVersion',
 	SHOW_SYSTEM_MESSAGE: 'showSystemMessage',
 	RENDER_THINKING_AS_MARKDOWN: 'renderThinkingAsMarkdown',
+	WIDE_CHAT_MODE: 'wideChatMode',
+	ACCENT_COLOR: 'accentColor',
 	// Sampling
 	TEMPERATURE: 'temperature',
 	DYNATEMP_RANGE: 'dynatemp_range',

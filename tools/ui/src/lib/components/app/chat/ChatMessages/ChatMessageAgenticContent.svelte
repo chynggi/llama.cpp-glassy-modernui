@@ -407,6 +407,12 @@
 		gap: 1rem;
 	}
 
+	@media (min-width: 1536px) {
+		:global(html.wide-chat-mode) .agentic-content {
+			max-width: 64rem;
+		}
+	}
+
 	.agentic-content > :global(*),
 	.agentic-turn > :global(*) {
 		min-width: 0;

@@ -165,7 +165,8 @@
 			// Transition
 			'md:transition-[width,padding] duration-200 ease-out',
 			// Expanded state: width, surface, depth
-			isStripExpanded && 'md:w-72 md:bg-muted/60 md:backdrop-blur-xl border-border shadow-md',
+			isStripExpanded &&
+				'md:w-72 md:bg-background/75 md:dark:bg-background/55 md:backdrop-blur-xl border-border/40 dark:border-border/20 shadow-lg glass-backdrop',
 			// Collapsed state
 			!isStripExpanded && 'md:w-12',
 			// Expanded mode flag (for mobile ::before overlay)

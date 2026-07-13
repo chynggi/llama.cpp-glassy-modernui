@@ -202,7 +202,10 @@
 
 <div
 	bind:this={assistantEl}
-	class="chat-message-assistant text-md group w-full leading-7.5 {className}"
+	class="chat-message-assistant text-md group w-full leading-7.5 {className} {isLastAssistantMessage &&
+	isChatStreaming()
+		? 'glass-glow-pulse rounded-2xl'
+		: ''}"
 	style:--last-user-message-height={lastUserMessageHeight > 0
 		? `${lastUserMessageHeight}px`
 		: undefined}
@@ -211,7 +214,7 @@
 	aria-label="Assistant message with actions"
 >
 	{#if showProcessingInfoTop}
-		<div class="mt-6 w-full max-w-3xl" in:fade>
+		<div class="mt-6 w-full chat-width" in:fade>
 			<div class="processing-container">
 				<span class="processing-text">
 					{modelLoadingText ??
@@ -243,7 +246,7 @@
 	{/if}
 
 	{#if showProcessingInfoBottom}
-		<div class="mt-4 w-full max-w-3xl" in:fade>
+		<div class="mt-4 w-full chat-width" in:fade>
 			<div class="processing-container">
 				<span class="processing-text">
 					{modelLoadingText ??
@@ -395,5 +398,11 @@
 		line-height: 1.6;
 		white-space: pre-wrap;
 		word-break: break-word;
+	}
+
+	@media (min-width: 1536px) {
+		:global(html.wide-chat-mode) .raw-output {
+			max-width: 64rem;
+		}
 	}
 </style>

@@ -8,6 +8,8 @@
 		ServerLoadingSplash,
 		ChatScreenServerError
 	} from '$lib/components/app';
+	import { Button } from '$lib/components/ui/button';
+	import { Maximize2, Minimize2 } from '@lucide/svelte';
 	import { createAutoScrollController } from '$lib/hooks/use-auto-scroll.svelte';
 	import { useChatScreenActiveModel } from '$lib/hooks/use-chat-screen-active-model.svelte';
 	import { useChatScreenDragAndDrop } from '$lib/hooks/use-chat-screen-drag-and-drop.svelte';
@@ -28,8 +30,9 @@
 		activeMessages,
 		activeConversation
 	} from '$lib/stores/conversations.svelte';
-	import { config } from '$lib/stores/settings.svelte';
+	import { config, settingsStore } from '$lib/stores/settings.svelte';
 	import { serverLoading, serverError } from '$lib/stores/server.svelte';
+	import { SETTINGS_KEYS } from '$lib/constants';
 	import { parseFilesToMessageExtras } from '$lib/utils/browser-only';
 	import { onDestroy, onMount } from 'svelte';
 	import ChatScreenGreeting from './ChatScreenGreeting.svelte';
@@ -54,6 +57,7 @@
 	let isServerLoading = $derived(serverLoading());
 	let hasPropsError = $derived(!!serverError());
 	let isCurrentConversationLoading = $derived(isLoading() || isChatStreaming());
+	let isWideChatMode = $derived(Boolean(config()[SETTINGS_KEYS.WIDE_CHAT_MODE]));
 	let chatFormBottomPosition = $derived.by(() => {
 		if (!isMobile.current) return '1rem';
 		if (device.isStandalone) return '1.5rem';
@@ -298,6 +302,24 @@
 				onSystemPromptAdd={handleSystemPromptAdd}
 				bind:uploadedFiles={fileUpload.uploadedFiles}
 			/>
+
+			<div class="pointer-events-auto mt-2 hidden justify-end 2xl:flex">
+				<Button
+					variant="ghost"
+					size="sm"
+					class="h-8 gap-1.5 px-2 text-xs text-muted-foreground hover:text-foreground"
+					onclick={() => settingsStore.updateConfig(SETTINGS_KEYS.WIDE_CHAT_MODE, !isWideChatMode)}
+					aria-label={isWideChatMode ? 'Collapse chat width' : 'Expand chat width'}
+					title={isWideChatMode ? 'Collapse chat width' : 'Expand chat width'}
+				>
+					{#if isWideChatMode}
+						<Minimize2 class="h-3.5 w-3.5" />
+					{:else}
+						<Maximize2 class="h-3.5 w-3.5" />
+					{/if}
+					{isWideChatMode ? 'Narrow chat' : 'Wide chat'}
+				</Button>
+			</div>
 		</div>
 	</div>
 {/if}

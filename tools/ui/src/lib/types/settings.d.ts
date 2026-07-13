@@ -26,7 +26,7 @@ export interface SettingsEntry {
 	defaultValue: SettingsConfigValue;
 	type: SettingsFieldType;
 	section?: string;
-	options?: Array<{ value: string; label: string; icon: Component }>;
+	options?: Array<{ value: string; label: string; icon?: Component }>;
 	isExperimental?: boolean;
 	isPositiveInteger?: boolean;
 	sync?: {

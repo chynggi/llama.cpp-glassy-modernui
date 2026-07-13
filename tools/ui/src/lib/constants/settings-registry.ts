@@ -57,6 +57,16 @@ const COLOR_MODE_OPTIONS: Array<{ value: string; label: string; icon: Component 
 	{ value: ColorMode.DARK, label: 'Dark', icon: Moon }
 ];
 
+const ACCENT_COLOR_OPTIONS: Array<{ value: string; label: string }> = [
+	{ value: 'default', label: 'Default' },
+	{ value: 'blue', label: 'Blue' },
+	{ value: 'green', label: 'Green' },
+	{ value: 'purple', label: 'Purple' },
+	{ value: 'orange', label: 'Orange' },
+	{ value: 'pink', label: 'Pink' },
+	{ value: 'red', label: 'Red' }
+];
+
 const SETTINGS_REGISTRY: Record<string, SettingsSectionEntry> = {
 	[SETTINGS_SECTION_SLUGS.GENERAL]: {
 		title: SETTINGS_SECTION_TITLES.GENERAL,
@@ -378,6 +388,23 @@ const SETTINGS_REGISTRY: Record<string, SettingsSectionEntry> = {
 					serverKey: SETTINGS_KEYS.SHOW_BUILD_VERSION,
 					paramType: SyncableParameterType.BOOLEAN
 				}
+			},
+			{
+				key: SETTINGS_KEYS.WIDE_CHAT_MODE,
+				label: 'Wide chat mode',
+				help: 'Expand the chat message column up to max-w-5xl on large screens (2xl breakpoint). The sidebar continues to resize automatically.',
+				defaultValue: false,
+				type: SettingsFieldType.CHECKBOX,
+				section: SETTINGS_SECTION_SLUGS.DISPLAY
+			},
+			{
+				key: SETTINGS_KEYS.ACCENT_COLOR,
+				label: 'Accent color',
+				help: 'Choose a custom accent color used for focus glows, message bubbles, and AI activity highlights.',
+				defaultValue: 'default',
+				type: SettingsFieldType.SELECT,
+				section: SETTINGS_SECTION_SLUGS.DISPLAY,
+				options: ACCENT_COLOR_OPTIONS
 			}
 		]
 	},

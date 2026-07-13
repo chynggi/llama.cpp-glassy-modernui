@@ -10,6 +10,7 @@
 	import { SidebarNavigation, DialogConversationTitleUpdate } from '$lib/components/app';
 	import { DialogMcpServerRecommendations } from '$lib/components/app/dialogs';
 	import { PwaMetaTags, PwaRefreshAlert } from '$lib/components/pwa';
+	import ThemeEffects from '$lib/components/app/theme/ThemeEffects.svelte';
 	import { pwaAssetsHead } from 'virtual:pwa-assets/head';
 
 	import { chatStore } from '$lib/stores/chat.svelte';
@@ -315,6 +316,8 @@
 	</div>
 
 	<ModeWatcher />
+
+	<ThemeEffects />
 
 	<Toaster richColors />
 
