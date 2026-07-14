@@ -7,7 +7,7 @@
 	import { untrack } from 'svelte';
 	import { onMount } from 'svelte';
 
-	import { SidebarNavigation, DialogConversationTitleUpdate } from '$lib/components/app';
+	import { SidebarNavigation, DialogConversationTitleUpdate, CommandPalette } from '$lib/components/app';
 	import { DialogMcpServerRecommendations } from '$lib/components/app/dialogs';
 	import { PwaMetaTags, PwaRefreshAlert } from '$lib/components/pwa';
 	import ThemeEffects from '$lib/components/app/theme/ThemeEffects.svelte';
@@ -333,6 +333,8 @@
 		open={mcpRecommendations.open}
 		onOpenChange={mcpRecommendations.handleOpenChange}
 	/>
+
+	<CommandPalette />
 </Tooltip.Provider>
 
 <!-- PWA update prompt + version -->

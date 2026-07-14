@@ -6,7 +6,8 @@
 		ChatScreenDragOverlay,
 		ChatScreenStreamResumeStatus,
 		ServerLoadingSplash,
-		ChatScreenServerError
+		ChatScreenServerError,
+		SearchResultsPreview
 	} from '$lib/components/app';
 	import { Button } from '$lib/components/ui/button';
 	import { Expand, Maximize2, Minimize2 } from '@lucide/svelte';
@@ -30,6 +31,7 @@
 		activeMessages,
 		activeConversation
 	} from '$lib/stores/conversations.svelte';
+	import { searchProvidersStore } from '$lib/stores/search-providers.svelte';
 	import { config, settingsStore } from '$lib/stores/settings.svelte';
 	import { serverLoading, serverError } from '$lib/stores/server.svelte';
 	import { SETTINGS_KEYS } from '$lib/constants';
@@ -196,6 +198,12 @@
 		}
 	});
 
+	// Clear global search preview when switching conversations
+	$effect(() => {
+		void activeConversation()?.id;
+		searchProvidersStore.clearResults();
+	});
+
 	onMount(() => {
 		const pendingDraft = chatStore.consumePendingDraft();
 		if (pendingDraft) {
@@ -289,6 +297,8 @@
 					/>
 				{/if}
 			</div>
+
+			<SearchResultsPreview />
 
 			<ChatScreenForm
 				class="pointer-events-auto conversation-chat-form"

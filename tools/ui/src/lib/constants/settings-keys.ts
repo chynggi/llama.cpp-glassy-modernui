@@ -77,5 +77,14 @@ export const SETTINGS_KEYS = {
 	// PY_INTERPRETER_ENABLED: 'pyInterpreterEnabled',
 	JS_SANDBOX_ENABLED: 'jsSandboxEnabled',
 	CUSTOM_JSON: 'customJson',
-	CUSTOM_CSS: 'customCss'
+	CUSTOM_CSS: 'customCss',
+	// Packs
+	FOLDER_ORGANIZATION_ENABLED: 'folderOrganizationEnabled',
+	SKILL_SYSTEM_ENABLED: 'skillSystemEnabled',
+	WEB_SEARCH_ENABLED: 'webSearchEnabled',
+	WEB_SEARCH_AUTO_DETECT: 'webSearchAutoDetect',
+	WEB_SEARCH_RESULTS_COUNT: 'webSearchResultsCount',
+	WEB_SEARCH_ACTIVE_PROVIDER: 'webSearchActiveProvider',
+	PRESETS_ENABLED: 'presetsEnabled',
+	COMMAND_PALETTE_ENABLED: 'commandPaletteEnabled'
 } as const;

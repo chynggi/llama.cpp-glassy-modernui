@@ -46,6 +46,67 @@ export { modelLoadFraction, modelLoadProgressText } from './progress';
 
 // Conversation utilities
 export { createMessageCountMap, getMessageCount } from './conversation-utils';
+export { filterConversations, type ConversationFilterOptions } from './conversation-filters';
+export {
+	patchConversationOrgState,
+	collectAllTags,
+	nextTagFilter,
+	conversationIdsInFolder,
+	tagsAfterAdd,
+	tagsAfterRemove,
+	type ConversationOrgPatch
+} from './conversation-org';
+
+// Export formats
+export { exportConversationAsMarkdown, exportConversationAsHtml } from './export';
+
+// Web search
+export {
+	SEARCH_PROVIDERS,
+	getSearchProvider,
+	formatSearchResultsForContext,
+	type SearchResult,
+	type SearchProviderConfig,
+	type SearchProvider
+} from './search';
+export {
+	mapDuckDuckGoInstantAnswer,
+	buildDuckDuckGoInstantAnswerUrl,
+	type DuckDuckGoInstantAnswer
+} from './ddgs';
+
+// Skill engine
+export {
+	parseSkillCommand,
+	applySkillTemplate,
+	missingPlaceholders,
+	rankSkills,
+	type ParsedSkillCommand
+} from './skill-engine';
+
+// Command palette builders
+export {
+	buildCommandPaletteItems,
+	filterCommandPaletteItems,
+	groupCommandPaletteItems,
+	type CommandPaletteItemDesc,
+	type CommandPaletteSources
+} from './command-palette-commands';
+
+// Preset apply
+export {
+	buildPresetConfigUpdates,
+	parseMcpOverridesJson,
+	collectSamplingParamsFromForm,
+	PRESET_SAMPLING_KEYS
+} from './preset-apply';
+
+// Compose draft (command palette -> chat form)
+export {
+	setPendingComposeText,
+	consumePendingComposeText,
+	peekPendingComposeText
+} from './compose-draft';
 
 // Clipboard utilities
 export {

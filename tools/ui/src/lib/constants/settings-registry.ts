@@ -10,6 +10,7 @@ import {
 	Sliders,
 	PencilRuler,
 	Database,
+	Package,
 	Monitor as MonitorIcon,
 	Sun,
 	Moon
@@ -39,7 +40,8 @@ export const SETTINGS_SECTION_TITLES = {
 	TOOLS: 'Tools',
 	MCP: 'MCP',
 	IMPORT_EXPORT: 'Import/Export',
-	DEVELOPER: 'Developer'
+	DEVELOPER: 'Developer',
+	PACKS: 'Packs'
 } as const;
 
 const STANDALONE_SECTIONS: { title: SettingsSectionTitle; slug: string; icon: Component }[] = [
@@ -836,6 +838,86 @@ const SETTINGS_REGISTRY: Record<string, SettingsSectionEntry> = {
 					serverKey: SETTINGS_KEYS.MCP_REQUEST_TIMEOUT_SECONDS,
 					paramType: SyncableParameterType.NUMBER
 				}
+			}
+		]
+	},
+	[SETTINGS_SECTION_SLUGS.PACKS]: {
+		title: SETTINGS_SECTION_TITLES.PACKS,
+		slug: SETTINGS_SECTION_SLUGS.PACKS,
+		icon: Package,
+		settings: [
+			{
+				key: SETTINGS_KEYS.FOLDER_ORGANIZATION_ENABLED,
+				label: 'Folder organization',
+				help: 'Enable conversation folders, tags, and archive. Adds folder management to the sidebar.',
+				defaultValue: false,
+				type: SettingsFieldType.CHECKBOX,
+				section: SETTINGS_SECTION_SLUGS.PACKS,
+				isExperimental: true
+			},
+			{
+				key: SETTINGS_KEYS.SKILL_SYSTEM_ENABLED,
+				label: 'Skill system',
+				help: 'Enable reusable prompt templates with slash commands (/summarize, /translate, etc.). Manage skills at #/skills.',
+				defaultValue: false,
+				type: SettingsFieldType.CHECKBOX,
+				section: SETTINGS_SECTION_SLUGS.PACKS,
+				isExperimental: true
+			},
+			{
+				key: SETTINGS_KEYS.WEB_SEARCH_ENABLED,
+				label: 'Web search',
+				help: 'Inject web search results into chat context on send. Configure providers at #/search-providers. When auto-detect is off, every message is searched; when on, only messages ending with ?.',
+				defaultValue: false,
+				type: SettingsFieldType.CHECKBOX,
+				section: SETTINGS_SECTION_SLUGS.PACKS,
+				isExperimental: true
+			},
+			{
+				key: SETTINGS_KEYS.WEB_SEARCH_AUTO_DETECT,
+				label: 'Auto-detect search queries',
+				help: 'When enabled, only search for messages that end with a question mark. When disabled, search every message while web search is on.',
+				defaultValue: false,
+				type: SettingsFieldType.CHECKBOX,
+				section: SETTINGS_SECTION_SLUGS.PACKS,
+				isExperimental: true
+			},
+			{
+				key: SETTINGS_KEYS.WEB_SEARCH_RESULTS_COUNT,
+				label: 'Search results count',
+				help: 'Number of search results to inject into chat context (1-10).',
+				defaultValue: 5,
+				type: SettingsFieldType.INPUT,
+				section: SETTINGS_SECTION_SLUGS.PACKS,
+				isPositiveInteger: true,
+				isExperimental: true
+			},
+			{
+				key: SETTINGS_KEYS.WEB_SEARCH_ACTIVE_PROVIDER,
+				label: 'Active search provider',
+				help: 'ID of the default search provider. Leave empty to use the first enabled provider. Manage providers at #/search-providers.',
+				defaultValue: '',
+				type: SettingsFieldType.INPUT,
+				section: SETTINGS_SECTION_SLUGS.PACKS,
+				isExperimental: true
+			},
+			{
+				key: SETTINGS_KEYS.PRESETS_ENABLED,
+				label: 'Chat presets',
+				help: 'Enable saved presets (system message + sampling + MCP + web search). Apply from the chat form, command palette, or #/presets.',
+				defaultValue: false,
+				type: SettingsFieldType.CHECKBOX,
+				section: SETTINGS_SECTION_SLUGS.PACKS,
+				isExperimental: true
+			},
+			{
+				key: SETTINGS_KEYS.COMMAND_PALETTE_ENABLED,
+				label: 'Command palette',
+				help: 'Enable Cmd/Ctrl+K command palette for quick actions: search conversations, run skills, apply presets, and more.',
+				defaultValue: false,
+				type: SettingsFieldType.CHECKBOX,
+				section: SETTINGS_SECTION_SLUGS.PACKS,
+				isExperimental: true
 			}
 		]
 	}

@@ -8,7 +8,11 @@
 		Square,
 		GitBranch,
 		Pin,
-		PinOff
+		PinOff,
+		Archive,
+		ArchiveRestore,
+		FolderInput,
+		Tag
 	} from '@lucide/svelte';
 	import { DropdownMenuActions } from '$lib/components/app';
 	import * as Tooltip from '$lib/components/ui/tooltip';
@@ -16,6 +20,7 @@
 	import { RouterService } from '$lib/services/router.service';
 	import { getAllLoadingChats } from '$lib/stores/chat.svelte';
 	import { conversationsStore } from '$lib/stores/conversations.svelte';
+	import { config } from '$lib/stores/settings.svelte';
 	import { TruncatedText } from '$lib/components/app';
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
@@ -63,6 +68,37 @@
 	function handleTogglePin() {
 		conversationsStore.toggleConversationPin(conversation.id);
 	}
+
+	function handleToggleArchive() {
+		conversationsStore.toggleArchiveConversation(conversation.id);
+	}
+
+	function handleAddTag() {
+		const tag = window.prompt('Enter tag name:');
+		if (tag && tag.trim()) {
+			conversationsStore.addTagToConversation(conversation.id, tag.trim());
+		}
+	}
+
+	function handleMoveToFolder(folderId: string | undefined) {
+		conversationsStore.moveConversationToFolder(conversation.id, folderId);
+	}
+
+	function handleRemoveTag(tag: string) {
+		conversationsStore.removeTagFromConversation(conversation.id, tag);
+	}
+
+	async function handleExportMarkdown() {
+		await conversationsStore.downloadConversationMarkdown(conversation.id);
+	}
+
+	async function handleExportHtml() {
+		await conversationsStore.downloadConversationHtml(conversation.id);
+	}
+
+	const folderOrgEnabled = $derived(Boolean(config().folderOrganizationEnabled));
+	const folders = $derived(conversationsStore.folders);
+	const conversationTags = $derived(conversation.tags ?? []);
 
 	function handleGlobalEditEvent(event: Event) {
 		const customEvent = event as CustomEvent<{ conversationId: string }>;
@@ -185,6 +221,57 @@
 							handleTogglePin();
 						}
 					},
+					...(folderOrgEnabled
+						? [
+								{
+									icon: conversation.archived ? ArchiveRestore : Archive,
+									label: conversation.archived ? 'Unarchive' : 'Archive',
+									onclick: (e: Event) => {
+										e.stopPropagation();
+										handleToggleArchive();
+									}
+								},
+								{
+									icon: Tag,
+									label: 'Add tag',
+									onclick: (e: Event) => {
+										e.stopPropagation();
+										handleAddTag();
+									}
+								},
+								...conversationTags.map((tag: string) => ({
+									icon: Tag,
+									label: `Remove tag: ${tag}`,
+									onclick: (e: Event) => {
+										e.stopPropagation();
+										handleRemoveTag(tag);
+									}
+								})),
+								...folders.map((folder) => ({
+									icon: FolderInput,
+									label:
+										conversation.folderId === folder.id
+											? `Folder: ${folder.name} (current)`
+											: `Move to: ${folder.name}`,
+									onclick: (e: Event) => {
+										e.stopPropagation();
+										handleMoveToFolder(folder.id);
+									}
+								})),
+								...(conversation.folderId
+									? [
+											{
+												icon: FolderInput,
+												label: 'Remove from folder',
+												onclick: (e: Event) => {
+													e.stopPropagation();
+													handleMoveToFolder(undefined);
+												}
+											}
+										]
+									: [])
+							]
+						: []),
 					{
 						icon: Pencil,
 						label: 'Edit',
@@ -193,12 +280,28 @@
 					},
 					{
 						icon: Download,
-						label: 'Export',
+						label: 'Export JSON',
 						onclick: (e: Event) => {
 							e.stopPropagation();
 							conversationsStore.downloadConversation(conversation.id);
 						},
 						shortcut: ['shift', 'cmd', 's']
+					},
+					{
+						icon: Download,
+						label: 'Export Markdown',
+						onclick: (e: Event) => {
+							e.stopPropagation();
+							handleExportMarkdown();
+						}
+					},
+					{
+						icon: Download,
+						label: 'Export HTML',
+						onclick: (e: Event) => {
+							e.stopPropagation();
+							handleExportHtml();
+						}
 					},
 					{
 						icon: Trash2,
