@@ -22,6 +22,7 @@ export const SETTINGS_KEYS = {
 	// Display
 	SHOW_MESSAGE_STATS: 'showMessageStats',
 	SHOW_THOUGHT_IN_PROGRESS: 'showThoughtInProgress',
+	AUTO_EXPAND_THINKING: 'autoExpandThinking',
 	AUTO_MIC_ON_EMPTY: 'autoMicOnEmpty',
 	RENDER_USER_CONTENT_AS_MARKDOWN: 'renderUserContentAsMarkdown',
 	DISABLE_AUTO_SCROLL: 'disableAutoScroll',
@@ -33,6 +34,7 @@ export const SETTINGS_KEYS = {
 	SHOW_BUILD_VERSION: 'showBuildVersion',
 	SHOW_SYSTEM_MESSAGE: 'showSystemMessage',
 	RENDER_THINKING_AS_MARKDOWN: 'renderThinkingAsMarkdown',
+	SHOW_MODEL_RESPONSE_LOGO: 'showModelResponseLogo',
 	WIDE_CHAT_MODE: 'wideChatMode',
 	ACCENT_COLOR: 'accentColor',
 	THEME_STYLE: 'themeStyle',

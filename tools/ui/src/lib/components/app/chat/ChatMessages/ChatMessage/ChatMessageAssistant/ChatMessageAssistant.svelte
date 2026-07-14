@@ -5,6 +5,7 @@
 		ChatMessageEditForm,
 		ChatMessageStatistics,
 		ModelBadge,
+		ModelLogo,
 		ModelsSelectorDropdown
 	} from '$lib/components/app';
 	import { getMessageEditContext } from '$lib/contexts';
@@ -16,9 +17,10 @@
 	import { fade } from 'svelte/transition';
 	import { MessageRole } from '$lib/enums';
 	import { config } from '$lib/stores/settings.svelte';
-	import { isRouterMode } from '$lib/stores/server.svelte';
+	import { isRouterMode, serverStore } from '$lib/stores/server.svelte';
 	import { modelsStore } from '$lib/stores/models.svelte';
 	import { ServerModelStatus } from '$lib/enums';
+	import { SETTINGS_KEYS } from '$lib/constants';
 
 	import { hasAgenticContent } from '$lib/utils';
 
@@ -78,6 +80,9 @@
 	let currentConfig = $derived(config());
 	let isRouter = $derived(isRouterMode());
 	let showRawOutput = $state(false);
+	let showModelResponseLogo = $derived(
+		Boolean(currentConfig[SETTINGS_KEYS.SHOW_MODEL_RESPONSE_LOGO] ?? true)
+	);
 
 	let rawOutputContent = $derived.by(() => {
 		const sections = deriveAgenticSections(message, toolMessages, [], false);
@@ -122,6 +127,29 @@
 	});
 
 	let displayedModel = $derived(message.model ?? null);
+	let logoModelHint = $derived(
+		displayedModel ??
+			modelsStore.selectedModelName ??
+			modelsStore.singleModelName ??
+			serverStore.props?.model_path ??
+			null
+	);
+	// Prefer GGUF general.architecture from props; in router mode, use loaded model meta.
+	let logoArchitecture = $derived.by(() => {
+		const fromProps = serverStore.props?.model_architecture;
+		if (fromProps) return fromProps;
+
+		const modelKey = displayedModel ?? modelsStore.selectedModelName;
+		if (!modelKey || !isRouter) return null;
+
+		const entry = modelsStore.routerModels.find(
+			(m) => m.id === modelKey || m.name === modelKey || m.aliases?.includes(modelKey)
+		);
+		const arch = entry?.meta?.architecture;
+		return typeof arch === 'string' && arch.length > 0 ? arch : null;
+	});
+	let logoChatTemplate = $derived(serverStore.props?.chat_template ?? null);
+	let logoModelAlias = $derived(serverStore.props?.model_alias ?? null);
 
 	// model being switched to while it loads, so the selector bar tracks it
 	let pendingModel = $state<string | null>(null);
@@ -229,16 +257,31 @@
 	{#if editCtx.isEditing}
 		<ChatMessageEditForm />
 	{:else if message.role === MessageRole.ASSISTANT}
-		{#if showRawOutput}
-			<pre class="raw-output">{rawOutputContent || ''}</pre>
-		{:else}
-			<ChatMessageAgenticContent
-				{message}
-				{toolMessages}
-				isStreaming={isChatStreaming()}
-				{isLastAssistantMessage}
-			/>
-		{/if}
+		<div class="flex w-full items-start gap-3">
+			{#if showModelResponseLogo}
+				<ModelLogo
+					class="mt-1"
+					model={logoModelHint}
+					architecture={logoArchitecture}
+					chatTemplate={logoChatTemplate}
+					modelAlias={logoModelAlias}
+					size="md"
+				/>
+			{/if}
+
+			<div class="min-w-0 flex-1">
+				{#if showRawOutput}
+					<pre class="raw-output">{rawOutputContent || ''}</pre>
+				{:else}
+					<ChatMessageAgenticContent
+						{message}
+						{toolMessages}
+						isStreaming={isChatStreaming()}
+						{isLastAssistantMessage}
+					/>
+				{/if}
+			</div>
+		</div>
 	{:else}
 		<div class="text-sm whitespace-pre-wrap">
 			{messageContent}

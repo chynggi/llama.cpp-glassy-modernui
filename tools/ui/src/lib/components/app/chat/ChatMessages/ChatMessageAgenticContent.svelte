@@ -54,6 +54,7 @@
 
 	const showToolCallInProgress = $derived(config().showToolCallInProgress as boolean);
 	const showThoughtInProgress = $derived(config().showThoughtInProgress as boolean);
+	const autoExpandThinking = $derived(config().autoExpandThinking as boolean);
 	const renderThinkingAsMarkdown = $derived(config().renderThinkingAsMarkdown as boolean);
 	const showMessageStats = $derived(config().showMessageStats as boolean);
 
@@ -157,8 +158,16 @@
 			return showToolCallInProgress;
 		}
 
+		if (section.type === AgenticSectionType.TOOL_CALL && showToolCallInProgress) {
+			return true;
+		}
+
 		if (section.type === AgenticSectionType.REASONING_PENDING) {
-			return showThoughtInProgress;
+			return showThoughtInProgress || autoExpandThinking;
+		}
+
+		if (section.type === AgenticSectionType.REASONING) {
+			return autoExpandThinking;
 		}
 
 		return false;

@@ -3964,6 +3964,12 @@ server_context_meta server_context::get_meta() const {
 
     const char * ftype_name = llama_ftype_name(llama_model_ftype(impl->model_tgt));
 
+    // GGUF general.architecture (e.g. "qwen2", "llama", "gemma3")
+    char arch_buf[128] = {0};
+    if (llama_model_meta_val_str(impl->model_tgt, "general.architecture", arch_buf, sizeof(arch_buf)) < 0) {
+        arch_buf[0] = '\0';
+    }
+
     return server_context_meta {
         /* build_info             */ std::string(llama_build_info()),
         /* model_name             */ impl->model_name,
@@ -3999,6 +4005,7 @@ server_context_meta server_context::get_meta() const {
         /* model_n_params         */ llama_model_n_params(impl->model_tgt),
         /* model_size             */ llama_model_size(impl->model_tgt),
         /* model_ftype            */ ftype_name,
+        /* model_architecture     */ std::string(arch_buf),
     };
 }
 
@@ -4540,6 +4547,7 @@ void server_routes::init_routes() {
             { "model_alias",                 meta->model_name },
             { "model_ftype",                 meta->model_ftype },
             { "model_path",                  meta->model_path },
+            { "model_architecture",          meta->model_architecture },
             { "modalities",                  json {
                 {"vision", meta->has_inp_image},
                 {"video",  meta->has_inp_video},
@@ -4848,10 +4856,12 @@ void server_routes::init_routes() {
                     {"details", {
                         {"parent_model", ""},
                         {"format", "gguf"},
-                        {"family", ""},
-                        {"families", {""}},
+                        {"family", meta->model_architecture},
+                        {"families", meta->model_architecture.empty()
+                            ? json::array({""})
+                            : json::array({meta->model_architecture})},
                         {"parameter_size", ""},
-                        {"quantization_level", ""}
+                        {"quantization_level", meta->model_ftype}
                     }}
                 }
             }},
@@ -5080,14 +5090,16 @@ json server_routes::get_model_info() const {
         {"created",  std::time(0)},
         {"owned_by", "llamacpp"},
         {"meta",     {
-            {"vocab_type",  meta->model_vocab_type},
-            {"n_vocab",     meta->model_vocab_n_tokens},
-            {"n_ctx",       meta->slot_n_ctx},
-            {"n_ctx_train", meta->model_n_ctx_train},
-            {"n_embd",      meta->model_n_embd_inp},
-            {"n_params",    meta->model_n_params},
-            {"size",        meta->model_size},
-            {"ftype",       meta->model_ftype},
+            {"vocab_type",   meta->model_vocab_type},
+            {"n_vocab",      meta->model_vocab_n_tokens},
+            {"n_ctx",        meta->slot_n_ctx},
+            {"n_ctx_train",  meta->model_n_ctx_train},
+            {"n_embd",       meta->model_n_embd_inp},
+            {"n_params",     meta->model_n_params},
+            {"size",         meta->model_size},
+            {"ftype",        meta->model_ftype},
+            // GGUF general.architecture
+            {"architecture", meta->model_architecture},
         }},
     };
 }

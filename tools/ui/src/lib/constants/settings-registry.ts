@@ -274,6 +274,18 @@ const SETTINGS_REGISTRY: Record<string, SettingsSectionEntry> = {
 				}
 			},
 			{
+				key: SETTINGS_KEYS.AUTO_EXPAND_THINKING,
+				label: 'Auto-expand thinking blocks',
+				help: 'Keep reasoning/thinking blocks expanded by default after generation finishes (and while streaming).',
+				defaultValue: false,
+				type: SettingsFieldType.CHECKBOX,
+				section: SETTINGS_SECTION_SLUGS.DISPLAY,
+				sync: {
+					serverKey: SETTINGS_KEYS.AUTO_EXPAND_THINKING,
+					paramType: SyncableParameterType.BOOLEAN
+				}
+			},
+			{
 				key: SETTINGS_KEYS.SHOW_TOOL_CALL_IN_PROGRESS,
 				label: 'Show tool call in progress',
 				help: 'Automatically expand tool call details while executing and keep them expanded after completion.',
@@ -321,6 +333,14 @@ const SETTINGS_REGISTRY: Record<string, SettingsSectionEntry> = {
 					serverKey: SETTINGS_KEYS.RENDER_THINKING_AS_MARKDOWN,
 					paramType: SyncableParameterType.BOOLEAN
 				}
+			},
+			{
+				key: SETTINGS_KEYS.SHOW_MODEL_RESPONSE_LOGO,
+				label: 'Show model response logo',
+				help: 'Show a provider/architecture logo next to assistant replies. Family is inferred from the model name/path and the logo is loaded from a public CDN.',
+				defaultValue: true,
+				type: SettingsFieldType.CHECKBOX,
+				section: SETTINGS_SECTION_SLUGS.DISPLAY
 			},
 			{
 				key: SETTINGS_KEYS.FULL_HEIGHT_CODE_BLOCKS,

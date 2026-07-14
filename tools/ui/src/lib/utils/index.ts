@@ -96,6 +96,15 @@ export {
 // Model name utilities
 export { normalizeModelName, isValidModelName } from './model-names';
 
+// Model family / architecture logos
+export {
+	parseModelFamily,
+	familyFromGgufArchitecture,
+	getModelLogoUrl,
+	type ResolvedModelFamily,
+	type ParseModelFamilyHints
+} from './model-family';
+
 // Portal utilities
 export { portalToBody } from './portal-to-body';
 
