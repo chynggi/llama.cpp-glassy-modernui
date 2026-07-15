@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ChevronsUpDownIcon from '@lucide/svelte/icons/chevrons-up-down';
+	import ChevronDownIcon from '@lucide/svelte/icons/chevron-down';
 	import * as Collapsible from '$lib/components/ui/collapsible/index.js';
 	import { buttonVariants } from '$lib/components/ui/button/index.js';
 	import { Card } from '$lib/components/ui/card';
@@ -7,6 +7,7 @@
 	import { useThrottle } from '$lib/hooks/use-throttle.svelte';
 	import { formatReasoningPreview } from '$lib/utils';
 	import { config } from '$lib/stores/settings.svelte';
+	import { slide } from 'svelte/transition';
 	import type { Snippet } from 'svelte';
 	import type { Component } from 'svelte';
 
@@ -156,21 +157,24 @@
 					class: 'h-6 w-6 p-0 text-muted-foreground hover:text-foreground'
 				})}
 			>
-				<ChevronsUpDownIcon class="h-4 w-4" />
+				<ChevronDownIcon class="h-4 w-4 transition-transform duration-300 {open ? 'rotate-180' : ''}" />
 
 				<span class="sr-only">Toggle content</span>
 			</div>
 		</Collapsible.Trigger>
 
-		<Collapsible.Content>
-			<div
-				bind:this={contentContainer}
-				class="overflow-y-auto border-t border-muted px-3 pb-3"
-				onscroll={handleScroll}
-				style="min-height: var(--min-message-height); max-height: var(--max-message-height);"
-			>
-				{@render children()}
-			</div>
+		<Collapsible.Content forceMount>
+			{#if open}
+				<div
+					bind:this={contentContainer}
+					transition:slide={{ duration: 250 }}
+					class="overflow-y-auto border-t border-muted px-3 pb-3"
+					onscroll={handleScroll}
+					style="min-height: var(--min-message-height); max-height: var(--max-message-height);"
+				>
+					{@render children()}
+				</div>
+			{/if}
 		</Collapsible.Content>
 	</Card>
 </Collapsible.Root>
