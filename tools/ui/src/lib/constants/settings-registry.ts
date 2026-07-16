@@ -25,7 +25,7 @@ import type {
 	SettingsSection
 } from '$lib/types';
 import { CLI_FLAGS, DEFAULT_MCP_CONFIG } from '$lib/constants';
-import { McpLogo } from '$lib/components/app/mcp';
+import McpLogo from '$lib/components/app/mcp/McpLogo.svelte';
 import { SETTINGS_KEYS } from './settings-keys';
 import { ROUTES, SETTINGS_SECTION_SLUGS } from './routes';
 import { TITLE_GENERATION } from './title-generation';
