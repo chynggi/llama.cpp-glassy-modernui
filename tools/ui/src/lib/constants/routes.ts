@@ -8,9 +8,9 @@ export const SETTINGS_SECTION_SLUGS = {
 	PENALTIES: 'penalties',
 	AGENTIC: 'agentic',
 	DEVELOPER: 'developer',
-	MCP: 'mcp',
 	TOOLS: 'tools',
 	IMPORT_EXPORT: 'import-export',
+	MCP: 'mcp',
 	PACKS: 'packs'
 } as const;
 

@@ -145,14 +145,14 @@
 			{#each RECOMMENDED_MCP_SERVERS as server (server.id)}
 				<McpServerCardCompact
 					{server}
-					enabled={selected[server.id]}
-					onToggle={(enabled) => (selected[server.id] = enabled)}
+					selected={selected[server.id]}
+					onClick={() => (selected[server.id] = !selected[server.id])}
 				/>
 			{/each}
 
 			{#if addedServers.length > 0}
 				{#each addedServers as server (server.id)}
-					<McpServerCardCompact {server} enabled={true} />
+					<McpServerCardCompact server={{ id: server.id, name: server.name ?? server.id, description: '', url: server.url }} selected />
 				{/each}
 			{/if}
 
