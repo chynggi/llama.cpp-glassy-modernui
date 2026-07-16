@@ -99,7 +99,7 @@ class ConversationsStore {
 	showArchived = $state(false);
 
 	/** Pending MCP server overrides for new conversations (before first message) */
-	pendingMcpServerOverrides = $state<McpServerOverride[]>(ConversationsStore.loadMcpDefaults());
+	pendingMcpServerOverrides = $state<McpServerOverride[]>([]);
 
 	/** Global (non-conversation-specific) thinking toggle default, derived from reasoning effort */
 	pendingThinkingEnabled = $state(false);
@@ -181,6 +181,7 @@ class ConversationsStore {
 		try {
 			await MigrationService.runAllMigrations();
 			await this.loadConversations();
+			this.reloadPendingMcpFromSettings();
 			this.isInitialized = true;
 		} catch (error) {
 			console.error('Failed to initialize conversations:', error);
@@ -1213,6 +1214,7 @@ class ConversationsStore {
 					toast.success(`Imported ${result.imported} conversation(s), skipped ${result.skipped}`);
 
 					await this.loadConversations();
+			this.reloadPendingMcpFromSettings();
 
 					const importedConversations = (
 						Array.isArray(importedData) ? importedData : [importedData]
@@ -1241,6 +1243,7 @@ class ConversationsStore {
 	): Promise<{ imported: number; skipped: number }> {
 		const result = await DatabaseService.importConversations(data);
 		await this.loadConversations();
+			this.reloadPendingMcpFromSettings();
 		return result;
 	}
 
