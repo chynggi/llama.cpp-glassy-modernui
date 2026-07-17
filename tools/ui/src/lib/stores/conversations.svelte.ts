@@ -113,8 +113,7 @@ class ConversationsStore {
 	private lastNonOffEffort: ReasoningEffort | null = null;
 
 	private static loadMcpDefaults(): McpServerOverride[] {
-		try {
-			const raw = config()[SETTINGS_KEYS.MCP_DEFAULT_SERVER_OVERRIDES];
+		const raw = config()[SETTINGS_KEYS.MCP_DEFAULT_SERVER_OVERRIDES];
 		if (typeof raw !== 'string' || raw.length === 0) return [];
 		try {
 			const parsed = JSON.parse(raw);
