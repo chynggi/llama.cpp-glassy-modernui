@@ -1,0 +1,109 @@
+# Normalize all text files to LF in the repo regardless of checkout platform.
+# This prevents CRLF noise on NTFS mounts. Editors keep LF per .editorconfig.
+* text=auto eol=lf
+
+# Source and text - enforce LF explicitly
+*.c      text eol=lf
+*.cpp    text eol=lf
+*.cc     text eol=lf
+*.h      text eol=lf
+*.hpp    text eol=lf
+*.hh     text eol=lf
+*.inl    text eol=lf
+*.m      text eol=lf
+*.mm     text eol=lf
+*.metal  text eol=lf
+*.cu     text eol=lf
+*.cuh    text eol=lf
+*.cl     text eol=lf
+*.comp   text eol=lf
+*.glsl   text eol=lf
+*.vert   text eol=lf
+*.frag   text eol=lf
+*.tesc   text eol=lf
+*.tese   text eol=lf
+*.geom   text eol=lf
+*.slang  text eol=lf
+
+*.py     text eol=lf
+*.pyi    text eol=lf
+*.sh     text eol=lf
+*.bash   text eol=lf
+*.fish   text eol=lf
+*.bat    text eol=crlf
+*.cmd    text eol=crlf
+*.ps1    text eol=crlf
+
+*.cmake      text eol=lf
+CMakeLists.txt text eol=lf
+*.nix        text eol=lf
+Dockerfile   text eol=lf
+Dockerfile.* text eol=lf
+*.spec       text eol=lf
+
+*.md        text eol=lf
+*.txt       text eol=lf
+*.rst       text eol=lf
+*.yml       text eol=lf
+*.yaml      text eol=lf
+*.json      text eol=lf
+*.toml      text eol=lf
+*.ini       text eol=lf
+*.cfg       text eol=lf
+*.editorconfig text eol=lf
+*.gitignore    text eol=lf
+*.gitattributes text eol=lf
+*.lock       text eol=lf
+*.html       text eol=lf
+*.css        text eol=lf
+*.js         text eol=lf
+*.mjs        text eol=lf
+*.cjs        text eol=lf
+*.ts         text eol=lf
+*.svelte     text eol=lf
+*.vue        text eol=lf
+
+# Binary - never normalize
+*.gguf  binary
+*.bin   binary
+*.dat   binary
+*.so    binary
+*.dll   binary
+*.exe   binary
+*.dylib binary
+*.o     binary
+*.a     binary
+*.lib   binary
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.ico   binary
+*.icns  binary
+*.webp  binary
+*.bmp   binary
+*.tiff  binary
+*.tif   binary
+*.pdf   binary
+*.zip   binary
+*.gz    binary
+*.tar   binary
+*.tgz   binary
+*.7z    binary
+*.woff  binary
+*.woff2 binary
+*.ttf   binary
+*.otf   binary
+*.eot   binary
+*.mp3   binary
+*.mp4   binary
+*.wav   binary
+*.ogg   binary
+*.webm  binary
+
+# Generated / linguistic stats
+*.min.js  linguist-generated=true
+*.min.css linguist-generated=true
+package-lock.json linguist-generated=true
+pnpm-lock.yaml     linguist-generated=true
+yarn.lock          linguist-generated=true

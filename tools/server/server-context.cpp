@@ -19,6 +19,7 @@
 
 #include <algorithm>
 #include <cstddef>
+#include <cstdio>
 #include <cinttypes>
 #include <exception>
 #include <memory>
@@ -33,6 +34,8 @@
 #   define NOMINMAX
 #endif
 #include <windows.h>
+#else
+#include <unistd.h>
 #endif
 
 using json = nlohmann::ordered_json;
@@ -970,6 +973,15 @@ private:
         int64_t t_last_load_progress_ms = 0;
         load_progress_data(server_context_impl * ctx, const std::string & stage) : ctx(ctx), stage(stage) {}
     };
+
+    // true when stderr is a terminal, so we can render an in-place progress bar
+    static bool stdout_is_tty() {
+#if defined(_WIN32)
+        return _isatty(_fileno(stderr));
+#else
+        return isatty(fileno(stderr));
+#endif
+    }
     static bool load_progress_callback(float progress, void * user_data) {
         auto * d = static_cast<load_progress_data *>(user_data);
         GGML_ASSERT(d);
@@ -985,12 +997,43 @@ private:
             }
             t_last = t_now;
         }
+        // emit a structured loading state for the web UI / router
         if (d->ctx->callback_state) {
             d->ctx->callback_state(SERVER_STATE_LOADING, {
                 {"stages", d->stages},
                 {"current", d->stage},
                 {"value", progress},
             });
+        }
+        // when attached to a terminal, also render an in-place tqdm-style bar
+        if (stdout_is_tty()) {
+            constexpr int bar_width = 30;
+            int pos = (int) (bar_width * progress);
+            if (pos > bar_width) {
+                pos = bar_width;
+            }
+            std::string bar;
+            bar.reserve(bar_width + 24);
+            bar += '\r';
+            bar += '[';
+            for (int i = 0; i < bar_width; i++) {
+                if (i < pos) {
+                    bar += '=';
+                } else if (i == pos) {
+                    bar += '>';
+                } else {
+                    bar += ' ';
+                }
+            }
+            bar += ']';
+            char pct[32];
+            snprintf(pct, sizeof(pct), " %s %3u%%", d->stage.c_str(), (unsigned) (100 * progress));
+            bar += pct;
+            fputs(bar.c_str(), stderr);
+            if (progress >= 1.0f) {
+                fputc('\n', stderr);
+            }
+            fflush(stderr);
         }
         return true;
     }

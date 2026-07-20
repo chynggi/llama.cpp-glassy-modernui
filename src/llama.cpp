@@ -26,6 +26,12 @@
 #include <stdexcept>
 #include <vector>
 
+#if defined(_WIN32)
+#include <io.h>
+#else
+#include <unistd.h>
+#endif
+
 #if defined(_MSC_VER)
 #pragma warning(disable: 4244 4267) // possible loss of data
 #endif
@@ -364,6 +370,8 @@ static struct llama_model * llama_model_load_from_file_impl(
     }
     ggml_time_init();
 
+    ggml_time_init();
+
     if (!params.vocab_only && ggml_backend_reg_count() == 0) {
         LLAMA_LOG_ERROR("%s: no backends are loaded. hint: use ggml_backend_load() or ggml_backend_load_all() to load a backend before calling this function\n", __func__);
         return nullptr;
@@ -375,13 +383,56 @@ static struct llama_model * llama_model_load_from_file_impl(
         params.progress_callback = [](float progress, void * ctx) {
             unsigned * cur_percentage_p = (unsigned *) ctx;
             unsigned percentage = (unsigned) (100 * progress);
-            while (percentage > *cur_percentage_p) {
-                *cur_percentage_p = percentage;
-                LLAMA_LOG_CONT(".");
-                if (percentage >= 100) {
-                    LLAMA_LOG_CONT("\n");
+
+            // When stdout is not a terminal (pipe, file, CI log), keep the
+            // previous newline-separated dots behaviour to avoid mangling logs.
+#if defined(_WIN32)
+            const bool is_tty = _isatty(_fileno(stdout));
+#else
+            const bool is_tty = isatty(fileno(stdout));
+#endif
+            if (!is_tty) {
+                while (percentage > *cur_percentage_p) {
+                    *cur_percentage_p = percentage;
+                    LLAMA_LOG_CONT(".");
+                    if (percentage >= 100) {
+                        LLAMA_LOG_CONT("\n");
+                    }
+                }
+                return true;
+            }
+
+            // tqdm-style in-place progress bar
+            constexpr int bar_width = 30;
+            int pos = (int) (bar_width * progress);
+            if (pos > bar_width) {
+                pos = bar_width;
+            }
+
+            std::string bar;
+            bar.reserve(bar_width + 16);
+            bar += '\r';
+            bar += '[';
+            for (int i = 0; i < bar_width; i++) {
+                if (i < pos) {
+                    bar += '=';
+                } else if (i == pos) {
+                    bar += '>';
+                } else {
+                    bar += ' ';
                 }
             }
+            bar += ']';
+            char pct[8];
+            snprintf(pct, sizeof(pct), " %3u%%", percentage);
+            bar += pct;
+
+            LLAMA_LOG("%s", bar.c_str());
+            if (percentage >= 100) {
+                LLAMA_LOG("\n");
+            }
+            *cur_percentage_p = percentage;
+
             return true;
         };
     }
